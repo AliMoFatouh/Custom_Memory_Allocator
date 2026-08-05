@@ -1,6 +1,6 @@
 /*
 
-    Simple Custom Memory Allocator 
+    Simple Custom Memory Allocator
     made by Hanafy, Ali
 
     This main Function includes all the needed Functions and Variables
@@ -45,6 +45,7 @@ unsigned char heap[HEAP_SIZE] = {0};//MEMORY HEAP SEGMENT
 
 int main(void){
 
+
     std::cout<<"===== HEAP ALLOCATOR TEST =====\n\n";
 
 
@@ -60,6 +61,7 @@ int main(void){
         std::cout<<"Allocation Failed\n";
         return 1;
     }
+
 
 
 while(1){//Ensure Correct Input
@@ -87,6 +89,7 @@ while(1){//Ensure Correct Input
         cout<<"Incorrect Input was Found, Try again"<<endl;
         continue;
     }
+
     break;
 }
 
@@ -190,8 +193,12 @@ index:
 0        1        2        3        4 ...
 +--------+--------+--------+--------+----+
 | size   | size   |        user data     |
-|  MSB   |  LSB   |                      |
+|  MSB   |  LSB   |          Bytes       |
 +--------+--------+----------------------+
+                   ^
+                   |
+                   |
+                Pointers
 
 
 */
@@ -245,12 +252,11 @@ void* heap_alloc(size_t size)
         int j = i;
 
         // Check if this region has enough free bytes
-        while(counter < size + 2 && heap[j] == 0x00)
+        while(( counter < size + 2 ) &&  (j <= HEAP_SIZE-1) && ( heap[j] == 0x00 ) )
         {
             j++;
             counter++;
         }
-
 
         // Found enough space
         if(counter == size + 2)
@@ -260,14 +266,14 @@ void* heap_alloc(size_t size)
 
         }
 
-
+        ///WILL ONLY STOP AT META DATA
         // Otherwise this block is occupied -- reading the NEXT META DATA
         unsigned short int READ_BLOCKS =
-            ((unsigned short int)heap[i] << 8) | heap[i+1];
+            ((unsigned short int)heap[i] << 8) | heap[i+1];     ///Size of the current Block (Data Bytes)
 
 
         // Skip metadata + data
-        i = i + 2 + READ_BLOCKS;
+        i = i + 2 + READ_BLOCKS;        /// i INCREMENTING Method {i + (Meta Data Bytes) + Data Bytes };
     }
 
 
