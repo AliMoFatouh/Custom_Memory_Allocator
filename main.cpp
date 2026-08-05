@@ -1,6 +1,17 @@
+/*
+
+    Simple Custom Memory Allocator 
+    made by Hanafy, Ali
+
+    This main Function includes all the needed Functions and Variables
+
+*/
+
+
 #include <iostream>
 #include<string>
 #include<ctype.h>
+#include <climits>
 
 
 #define HEAP_SIZE 64000
@@ -11,8 +22,10 @@ void* heap_alloc(size_t size);
 
 void heap_free(void* ptr);
 
-int EnsureCorrectInput(string data);
 
+//exists with main
+int EnsureCorrectInput(string data);
+///OUR HEAP
 unsigned char heap[HEAP_SIZE] = {0};//MEMORY HEAP SEGMENT
 
 
@@ -34,6 +47,8 @@ int main(void){
         return 1;
     }
 
+
+while(1){//Ensure Correct Input
     string DataTestFormat;
     cout<<"write down the value of a: ";
 
@@ -52,6 +67,14 @@ int main(void){
     getline(cin, DataTestFormat);
 
     *c = EnsureCorrectInput(DataTestFormat);
+
+    if(*a==INT_MIN || *b==INT_MIN || *c==INT_MIN){
+
+        cout<<"Incorrect Input was Found, Try again"<<endl;
+        continue;
+    }
+    break;
+}
 
 
 
@@ -129,19 +152,19 @@ int main(void){
 
 int EnsureCorrectInput(string data){
 
+        int i = 0;
+        if(data[0] == '-'){i++;}
 
-    for(int i=0; i < data.length();i++){
+        for(;i < data.length();i++){
 
-         if(data[i] < '0' || data[i] > '9')
-        {
-            cout<<"Incorrect Input!!"<<endl;
-            return -1;
+             if(data[i] < '0' || data[i] > '9')
+            {
+                cout<<"Incorrect Input!!"<<endl;
+                return INT_MIN;
+            }
+
         }
-
         return stoi(data); ///Correct Input
-
-    }
-
 }
 
 
