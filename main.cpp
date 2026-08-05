@@ -7,6 +7,20 @@
 
 */
 
+///The Heap Block
+/*
+
+
+index:
+0        1        2        3        4 ...
++--------+--------+--------+--------+----+
+| size   | size   |        user data     |
+|  MSB   |  LSB   |                      |
++--------+--------+----------------------+
+
+
+*/
+
 
 #include <iostream>
 #include<string>
